@@ -1,24 +1,35 @@
 package com.crud.project.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.sun.source.doctree.EscapeTree;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="Student_Info")
 public class Student {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotBlank(message = "firstName is required")
+    @Size(min = 3, message = "firstName must be at least 3 character")
     @Column(name="First_name")
     private String firstName;
+
+    @NotBlank(message = "lastName is required")
+    @Size(min=3, message = "lastName must be at least 3 character")
     @Column(name="Last_name")
     private String lastName;
-    @Column(name ="Class")
-    private String className;
 
-    public String getClassName() {
+    @Column(name ="Class")
+    @Enumerated(EnumType.STRING)
+    private classEnum className;
+
+
+
+    public classEnum getClassName() {
         return className;
     }
 
@@ -38,7 +49,7 @@ public class Student {
         this.firstName = firstName;
     }
 
-    public void setClassName(String className) {
+    public void setClassName(classEnum className) {
         this.className = className;
     }
 
