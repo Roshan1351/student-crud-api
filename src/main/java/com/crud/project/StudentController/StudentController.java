@@ -18,30 +18,31 @@ public class StudentController {
     @Autowired
     StudentRepo repo;
 
-    @GetMapping
+    @GetMapping // fetching student can access both admin/teacher
     public List<Student> getAllStudents(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "5") int size){
         List<Student> list= repo.findAll(PageRequest.of(page, size)).getContent();
         return list;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") // fetching student by id can access both admin/teacher
     public Student getStudentById(@PathVariable int id){
         Student stud= repo.findById(id).get();
         return stud;
     }
 
-    @PostMapping
+    @PostMapping("/create")//only access of endpoint for admin
     public void createStudent(@Valid @RequestBody Student student){
+
         repo.save(student);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}") //access only admin
     public void deleteStudent(@PathVariable int id){
         Student stud= repo.findById(id).get();
         repo.delete(stud);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}") //access only admin
     public Student studentupdate(@PathVariable int id,@Valid @RequestBody Student stud){
         Student existstudent= repo.findById(id).orElseThrow(()->new RuntimeException("student not found with this id"));
         existstudent.setFirstName(stud.getFirstName());
@@ -51,26 +52,19 @@ public class StudentController {
         return repo.save(existstudent);
     }
 
-    @GetMapping("/search")
-    public List<Student> searchStudent(@RequestParam String name){
+    @GetMapping("/search/{name}") //access by both admin/teacher
+    public List<Student> searchStudent(@PathVariable String name){
         return repo.findByFirstNameContainingIgnoreCase(name);
     }
 
-    @GetMapping("/count")
+    @GetMapping("/count") // access by admin/teacher
     public int countStudent(){
         return repo.countStudentAll();
     }
 
-    @GetMapping("/class/{className}")
+    @GetMapping("/class/{className}")//access by only admin
     public List<Student> getStudentByClassName(@PathVariable classEnum className){
         return repo.findByClassName(className);
-    }
-
-    @GetMapping("/dashboard")
-    public Dashboard getDashboard(){
-        int totalStudent= repo.countStudentAll();
-        int totalClasses= repo.CountDistinctClass();
-        return new Dashboard(totalStudent, totalClasses);
     }
 
 }
