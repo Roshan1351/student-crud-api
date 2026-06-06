@@ -21,8 +21,12 @@ public class RegisterUser {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public void UserRegister(@Valid @RequestBody UserEntity user){
+    public String UserRegister(@Valid @RequestBody UserEntity user){
+        if(userRepo.existsByUsername(user.getUsername())){
+            return "username already exists";
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
+        return "User Register Successfully";
     }
 }
