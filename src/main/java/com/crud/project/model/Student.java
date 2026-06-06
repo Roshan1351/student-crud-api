@@ -1,11 +1,16 @@
 package com.crud.project.model;
 
-
 import com.sun.source.doctree.EscapeTree;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="Student_Info")
 public class Student {

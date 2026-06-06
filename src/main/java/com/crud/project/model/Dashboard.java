@@ -7,14 +7,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Dashboard {
     int totalStudent;
     int totalClasses;
-    public Dashboard(){}
 
-    public Dashboard(int totalStudent, int totalClasses){
-        this.totalStudent= totalStudent;
-        this.totalClasses=totalClasses;
-    }
+
+    
 
 }
